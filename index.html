@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Историческая справка — Великая Отечественная война 1941–1945</title>
-  <meta name="description" content="Одностраничный шаблон-справка о Великой Отечественной войне в торжественном героическом стиле." />
+  <meta name="description" content="Одностраничная историческая справка о Великой Отечественной войне в торжественном героическом стиле." />
 
   <style>
     :root{
@@ -37,6 +37,7 @@
 
     a{ color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(215,177,90,.35); }
     a:hover{ border-bottom-color: rgba(215,177,90,.8); }
+    a:focus{ outline: 2px solid rgba(215,177,90,.45); outline-offset: 3px; border-radius: 10px; }
 
     code{ color: rgba(215,177,90,.95); }
 
@@ -161,7 +162,7 @@
       color: rgba(233,230,223,.85);
       background: rgba(255,255,255,.03);
       border: 1px solid rgba(255,255,255,.08);
-      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
     }
     .navLinks a:hover{
       background: rgba(215,177,90,.08);
@@ -545,6 +546,7 @@
       gap: 8px;
     }
 
+    /* ===== CLICKABLE AWARDS (презентабельные бейджи-ссылки) ===== */
     .badge{
       font-size: 12px;
       color: rgba(233,230,223,.82);
@@ -552,6 +554,51 @@
       background: rgba(0,0,0,.18);
       padding: 6px 10px;
       border-radius: 999px;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      text-decoration: none;
+      border-bottom: none; /* переопределяем общий стиль ссылок */
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+      box-shadow: 0 10px 18px rgba(0,0,0,.12);
+      position: relative;
+    }
+
+    /* маленькая “иконка внешней ссылки” (необязательно, но солидно) */
+    .badge[data-external="1"]::after{
+      content:"↗";
+      font-size: 12px;
+      line-height: 1;
+      opacity: .75;
+      transform: translateY(-1px);
+    }
+
+    .badge:hover{
+      background: rgba(215,177,90,.10);
+      border-color: rgba(215,177,90,.35);
+      transform: translateY(-1px);
+      box-shadow: 0 16px 26px rgba(0,0,0,.18);
+    }
+    .badge:focus{
+      outline: 2px solid rgba(215,177,90,.45);
+      outline-offset: 2px;
+    }
+
+    /* “неактивный” бейдж, если ссылка пока не задана */
+    .badge.isDisabled,
+    .badge[aria-disabled="true"]{
+      opacity: .55;
+      cursor: default;
+      transform: none !important;
+      box-shadow: none;
+    }
+    .badge.isDisabled:hover,
+    .badge[aria-disabled="true"]:hover{
+      background: rgba(0,0,0,.18);
+      border-color: rgba(255,255,255,.10);
     }
 
     /* Inline photos in text */
@@ -620,6 +667,16 @@
       :root{ --navH: 72px; }
       body{ padding-top: var(--navH); }
       .navLinks a{ padding: 8px 9px; }
+    }
+
+    /* Print (аккуратно для распечатки администрации) */
+    @media print{
+      .topNav, #sparks, .fire, .grain::before, .vignette, .bgfx{ display:none !important; }
+      body{ padding-top: 0; background:#fff; color:#111; }
+      main{ background:#fff; }
+      .personCard, .tItem, figure.card{ box-shadow:none; border-color:#ddd; }
+      a{ color:#111; border-bottom: none; text-decoration: underline; }
+      .badge{ border: 1px solid #ddd; background:#f7f7f7; color:#111; box-shadow:none; }
     }
   </style>
 </head>
@@ -778,11 +835,20 @@
                 Демобилизован в 1946 г. После войны работал в школе № 95 учителем физкультуры. Награждён орденами и медалями.
               </p>
 
-              <div class="personBadges">
-                <span class="badge">Орден Отечественной войны I степени</span>
-                <span class="badge">Медаль «За освобождение Варшавы»</span>
-                <span class="badge">Медаль «За взятие Берлина»</span>
-                <span class="badge">Медаль «За отвагу»</span>
+              <!-- Награды: ВСТАВЬТЕ СВОИ ССЫЛКИ В href -->
+              <div class="personBadges" aria-label="Награды">
+                <a class="badge" href="https://example.com/award-otechestvennaya-1" target="_blank" rel="noopener noreferrer" data-external="1">
+                  Орден Отечественной войны I степени
+                </a>
+                <a class="badge" href="https://example.com/award-varshava" target="_blank" rel="noopener noreferrer" data-external="1">
+                  Медаль «За освобождение Варшавы»
+                </a>
+                <a class="badge" href="https://example.com/award-berlin" target="_blank" rel="noopener noreferrer" data-external="1">
+                  Медаль «За взятие Берлина»
+                </a>
+                <a class="badge" href="https://example.com/award-otvaga" target="_blank" rel="noopener noreferrer" data-external="1">
+                  Медаль «За отвагу»
+                </a>
               </div>
             </div>
           </article>
@@ -808,13 +874,26 @@
                 После войны работал в школе № 95 учителем начальной военной подготовки. Награждён орденами и медалями.
               </p>
 
-              <div class="personBadges">
-                <span class="badge">Орден Красной Звезды</span>
-                <span class="badge">Медаль «За освобождение Варшавы»</span>
-                <span class="badge">Медаль «За взятие Берлина»</span>
-                <span class="badge">Медаль «За отвагу»</span>
-                <span class="badge">Медаль «За боевые заслуги»</span>
-                <span class="badge">Медаль «За победу над Германией»</span>
+              <!-- Награды: ВСТАВЬТЕ СВОИ ССЫЛКИ В href -->
+              <div class="personBadges" aria-label="Награды">
+                <a class="badge" href="https://example.com/award-red-star" target="_blank" rel="noopener noreferrer" data-external="1">
+                  Орден Красной Звезды
+                </a>
+                <a class="badge" href="https://example.com/award-varshava" target="_blank" rel="noopener noreferrer" data-external="1">
+                  Медаль «За освобождение Варшавы»
+                </a>
+                <a class="badge" href="https://example.com/award-berlin" target="_blank" rel="noopener noreferrer" data-external="1">
+                  Медаль «За взятие Берлина»
+                </a>
+                <a class="badge" href="https://example.com/award-otvaga" target="_blank" rel="noopener noreferrer" data-external="1">
+                  Медаль «За отвагу»
+                </a>
+                <a class="badge" href="https://example.com/award-combat-merit" target="_blank" rel="noopener noreferrer" data-external="1">
+                  Медаль «За боевые заслуги»
+                </a>
+                <a class="badge" href="https://example.com/award-victory-over-germany" target="_blank" rel="noopener noreferrer" data-external="1">
+                  Медаль «За победу над Германией»
+                </a>
               </div>
             </div>
           </article>
@@ -839,7 +918,12 @@
                 В 1969–1978 гг. был директором школы № 95.
               </p>
 
-              <div class="personBadges"></div>
+              <!-- Если награды/ссылки пока неизвестны — оставьте “неактивные” бейджи (не кликаются) -->
+              <div class="personBadges" aria-label="Награды">
+                <a class="badge isDisabled" href="#" aria-disabled="true" title="Ссылка будет добавлена после уточнения">
+                  Награды: сведения уточняются
+                </a>
+              </div>
             </div>
           </article>
 
@@ -889,6 +973,11 @@
           <code>img/person1.jpg</code>, <code>img/inline1.jpg</code>, <code>img/gallery1.jpg</code>.
           В названиях файлов используйте латиницу и без пробелов: <code>stalingrad-1943.jpg</code>.
         </p>
+
+        <p style="color: rgba(233,230,223,.70); margin-top: 10px;">
+          Примечание: ссылки на награды открываются в новой вкладке и могут вести на официальные/музейные ресурсы,
+          электронные каталоги или архивные страницы.
+        </p>
       </section>
 
     </div>
@@ -908,6 +997,28 @@
     // ===== Year =====
     var yEl = document.getElementById('y');
     if (yEl) yEl.textContent = String(new Date().getFullYear());
+
+    // ===== Awards links safety: disable placeholder links =====
+    // Если у бейджа href="#" или aria-disabled="true" — не открываем и не прыгаем наверх.
+    function initBadgeSafety() {
+      var badges = document.querySelectorAll('.badge');
+      if (!badges || !badges.length) return;
+
+      for (var i = 0; i < badges.length; i++) {
+        (function (a) {
+          if (!a || !a.addEventListener) return;
+
+          a.addEventListener('click', function (e) {
+            var href = a.getAttribute('href') || '';
+            var disabled = a.getAttribute('aria-disabled') === 'true' || /\bisDisabled\b/.test(a.className || '');
+            if (disabled || href === '#' || href === '') {
+              e.preventDefault();
+              return false;
+            }
+          });
+        })(badges[i]);
+      }
+    }
 
     // ===== Scrollspy (совместимый + fallback) =====
     function initScrollSpy() {
@@ -1104,6 +1215,7 @@
     function boot() {
       try { initScrollSpy(); } catch (e) {}
       try { initSparks(); } catch (e2) {}
+      try { initBadgeSafety(); } catch (e3) {}
     }
 
     if (document.readyState === 'loading') {
@@ -1112,6 +1224,6 @@
       boot();
     }
   })();
-</script>
+  </script>
 </body>
 </html>
